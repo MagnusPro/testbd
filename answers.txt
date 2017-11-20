@@ -1,0 +1,118 @@
+1 
+SELECT model, speed, hd
+FROM pc
+WHERE price < 500
+2 
+SELECT maker FROM product
+WHERE "type" = 'Printer'
+GROUP BY maker
+3
+SELECT model, ram, screen
+FROM laptop
+WHERE price > 1000
+4
+SELECT *
+FROM printer
+WHERE color = 'y'
+5
+SELECT model, speed, hd
+FROM pc
+WHERE price < 600 AND (cd = '12x' OR cd = '24x')
+6
+SELECT pr.maker, l.speed
+FROM product pr INNER JOIN laptop l
+  ON pr.model = l.model
+WHERE l.hd >= 10
+7
+(SELECT pc.model, pc.price
+FROM product INNER JOIN pc
+  ON product.model = pc.model
+WHERE product.maker = 'B'
+UNION
+SELECT l.model, l.price
+FROM product INNER JOIN laptop l
+  ON product.model = l.model
+WHERE product.maker = 'B')
+UNION
+SELECT pr.model, pr.price
+FROM product INNER JOIN printer pr
+  ON product.model = pr.model
+WHERE product.maker = 'B'
+8
+SELECT pr.maker
+FROM product pr INNER JOIN pc
+  ON pr.model = pc.model
+WHERE pr.maker NOT IN (
+  SELECT pr2.maker
+FROM product pr2 INNER JOIN laptop
+  ON pr2.model = laptop.model
+)
+GROUP BY pr.maker
+9
+SELECT pr.maker
+FROM product pr INNER JOIN pc
+  ON pr.model = pc.model
+WHERE pc.speed >= 450
+GROUP BY pr.maker
+10
+SELECT model, price
+FROM printer
+WHERE price = (
+  SELECT max(price)
+  FROM printer
+)
+11
+SELECT avg(speed)
+FROM pc
+12
+SELECT avg(speed)
+FROM laptop
+WHERE price > 1000
+13
+SELECT avg(speed)
+FROM pc INNER JOIN product
+  ON pc.model = product.model
+WHERE product.maker = 'A'
+14
+SELECT product.maker, product.type
+FROM product
+WHERE product.maker in (
+  SELECT p.maker
+  FROM product p
+  GROUP BY p.maker
+  HAVING Count(DISTINCT p.type) = 1 AND Count(p.model) > 1
+)
+GROUP BY product.maker, product.type
+15
+SELECT hd
+FROM pc
+GROUP BY hd
+HAVING Count(model) >= 2
+16
+Выводить модель мне показалось не совсем логично, потому что нескольким лэптопам соответствует одна модель, поэтому вывел код
+SELECT pc1.code, pc2.code, pc1.speed, pc1.ram
+FROM pc pc1, pc pc2
+WHERE (pc1.code > pc2.code AND pc1.speed = pc2.speed AND pc1.ram = pc2.ram)
+17
+Тут тоже было бы логичнее вывести модель и код, но вывел, как в задании
+SELECT type, l.model, l.speed
+FROM laptop l INNER JOIN product ON l.model = product.model
+WHERE l.speed < ANY(
+  SELECT speed
+18
+SELECT maker
+FROM product p INNER JOIN printer pr ON p.model = pr.model
+WHERE pr.color = 'y' AND pr.price = (
+  SELECT min(price)
+  FROM printer
+  WHERE printer.color = 'y'
+)
+GROUP BY maker
+19
+SELECT p.maker, avg(l.screen)
+FROM product p INNER join laptop l ON p.model = l.model
+GROUP BY p.maker
+20
+
+  FROM pc
+)
